@@ -1,3 +1,14 @@
 [workspace]
 resolver = "3"
 members = ["lex-http", "lex-server"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+
+[workspace.dependencies]
+# local crates
+lex-http = { path = "./lex-http/" }
+
+# external crates
+tokio = "1.47.1"
