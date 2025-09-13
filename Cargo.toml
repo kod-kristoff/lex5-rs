@@ -11,4 +11,5 @@ edition = "2024"
 lex-http = { path = "./lex-http/" }
 
 # external crates
+axum = "0.8.4"
 tokio = "1.47.1"
