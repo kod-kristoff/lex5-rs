@@ -1,3 +1,7 @@
+use anyhow::Context;
+use axum::{Router, routing};
+use tokio::net;
+
 /// Configuration for the HTTP server.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct HttpServerConfig<'a> {
@@ -6,8 +10,8 @@ pub struct HttpServerConfig<'a> {
 
 /// The application's HTTP server. The underlying HTTP package is opaque to module consumers.
 pub struct HttpServer {
-    // router: axum::Router,
-    // listener: net::TcpListener,
+    router: axum::Router,
+    listener: net::TcpListener,
 }
 
 impl HttpServer {
@@ -15,8 +19,8 @@ impl HttpServer {
     pub async fn new(
         // blog_service: impl BlogService,
         config: HttpServerConfig<'_>,
-    ) -> Result<Self, String> {
-        println!("Hello, world!");
+    ) -> anyhow::Result<Self> {
+        println!("Creating HttpServer!");
         // let trace_layer = tower_http::trace::TraceLayer::new_for_http().make_span_with(
         //     |request: &axum::extract::Request<_>| {
         //         let uri = request.uri().to_string();
@@ -29,28 +33,30 @@ impl HttpServer {
         //     author_service: Arc::new(blog_service),
         // };
         //
-        // let router = axum::Router::new()
-        //     .nest("/api", api_routes())
+        let router = 
+             api_routes()
         //     .layer(trace_layer)
         //     .with_state(state);
+        ;
 
-        // let listener = net::TcpListener::bind(format!("0.0.0.0:{}", config.port))
-        //     .await
-        //     .with_context(|| format!("failed to listen on {}", config.port))?;
+        let listener = net::TcpListener::bind(format!("0.0.0.0:{}", config.port))
+            .await
+            .with_context(|| format!("failed to listen on {}", config.port))?;
 
-        Ok(Self {
-            // router, 
-            // listener 
-        })
+        Ok(Self { router, listener })
     }
 
     /// Runs the HTTP server.
-    pub async fn run(self) -> Result<(), String> {
-        println!("Hello, world!");
+    pub async fn run(self) -> anyhow::Result<()> {
+        println!("listening on {}", self.listener.local_addr().unwrap());
         // tracing::debug!("listening on {}", self.listener.local_addr().unwrap());
-        // axum::serve(self.listener, self.router)
-        //     .await
-        //     .context("received error from running server")?;
+        axum::serve(self.listener, self.router)
+            .await
+            .context("received error from running server")?;
         Ok(())
     }
+}
+
+fn api_routes() -> Router {
+    Router::new().route("/", routing::get(async || "Hello"))
 }
