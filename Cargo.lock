@@ -18,6 +18,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa"
 
 [[package]]
+name = "anyhow"
+version = "1.0.99"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b0674a1ddeecb70197781e945de4b3b8ffb61fa939a5597bcf48503737663100"
+
+[[package]]
 name = "atomic-waker"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -268,6 +274,7 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 name = "lex-http"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "axum",
  "tokio",
 ]
@@ -276,6 +283,7 @@ dependencies = [
 name = "lex-server"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "lex-http",
  "tokio",
 ]
