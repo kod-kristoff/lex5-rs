@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["lex-http", "lex-server"]
+members = ["lex-http", "lex-server", "lex-service"]
 
 [workspace.package]
 version = "0.1.0"
@@ -9,8 +9,13 @@ edition = "2024"
 [workspace.dependencies]
 # local crates
 lex-http = { path = "./lex-http/" }
+lex-service = { path = "./lex-service/" }
 
 # external crates
 anyhow = "1.0.99"
 axum = "0.8.4"
+fastrace = "0.7.14"
+log = "0.4.28"
+serde = "1.0.225"
+thiserror = "2.0.16"
 tokio = "1.47.1"

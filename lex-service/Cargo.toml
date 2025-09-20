@@ -1,0 +1,9 @@
+[package]
+name = "lex-service"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+fastrace.workspace = true
+thiserror.workspace = true
