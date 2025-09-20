@@ -5,5 +5,6 @@ edition.workspace = true
 
 [dependencies]
 anyhow.workspace = true
+fastrace = { workspace = true, features = ["enable"] }
 lex-http.workspace = true
 tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
