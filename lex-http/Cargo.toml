@@ -6,4 +6,5 @@ edition.workspace = true
 [dependencies]
 anyhow = { workspace = true }
 axum = { workspace = true }
+fastrace.workspace = true
 tokio = { workspace = true, features = ["net"] }
