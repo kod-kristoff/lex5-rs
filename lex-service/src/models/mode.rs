@@ -10,19 +10,24 @@ pub enum ListAllModesError {
 #[derive(Debug, Clone)]
 pub struct Mode {
     id: ModeId,
+    groups: Option<Vec<ModeId>>,
 }
 
 impl Mode {
     pub fn new(id: ModeId) -> Self {
-        Self { id }
+        Self { id, groups: None }
     }
 
     pub fn id(&self) -> &ModeId {
         &self.id
     }
+
+    pub fn groups(&self) -> Option<&Vec<ModeId>> {
+        self.groups.as_ref()
+    }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq, Hash, serde::Deserialize, serde::Serialize)]
 /// A valid mode id.
 pub struct ModeId(String);
 
