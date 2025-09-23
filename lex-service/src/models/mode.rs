@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{borrow::Borrow, fmt};
 
 #[derive(Debug, thiserror::Error)]
 pub enum ListAllModesError {
@@ -7,7 +7,7 @@ pub enum ListAllModesError {
 }
 
 /// A mode.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Deserialize)]
 pub struct Mode {
     id: ModeId,
     groups: Option<Vec<ModeId>>,
@@ -25,6 +25,10 @@ impl Mode {
     pub fn groups(&self) -> Option<&Vec<ModeId>> {
         self.groups.as_ref()
     }
+}
+
+impl Mode {
+    pub fn update_from_defaults(&mut self, defaults: &Self) {}
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, Hash, serde::Deserialize, serde::Serialize)]
@@ -49,5 +53,17 @@ impl ModeId {
 impl fmt::Display for ModeId {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(&self.0)
+    }
+}
+
+impl Borrow<str> for ModeId {
+    fn borrow(&self) -> &str {
+        self.0.as_str()
+    }
+}
+
+impl PartialEq<&str> for &ModeId {
+    fn eq(&self, other: &&str) -> bool {
+        self.0.eq(*other)
     }
 }

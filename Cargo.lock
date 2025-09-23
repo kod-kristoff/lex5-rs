@@ -355,12 +355,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "lex-json-repos"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "lex-service",
+ "serde_json",
+]
+
+[[package]]
 name = "lex-server"
 version = "0.1.0"
 dependencies = [
  "anyhow",
  "fastrace",
  "lex-http",
+ "lex-json-repos",
+ "lex-service",
  "tokio",
 ]
 

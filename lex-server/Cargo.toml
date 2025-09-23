@@ -7,4 +7,6 @@ edition.workspace = true
 anyhow.workspace = true
 fastrace = { workspace = true, features = ["enable"] }
 lex-http.workspace = true
+lex-json-repos.workspace = true
+lex-service.workspace = true
 tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
