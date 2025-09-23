@@ -28,7 +28,7 @@ impl Mode {
 }
 
 impl Mode {
-    pub fn update_from_defaults(&mut self, defaults: &Self) {}
+    pub fn update_from_defaults(&mut self, _defaults: &Self) {}
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, Hash, serde::Deserialize, serde::Serialize)]

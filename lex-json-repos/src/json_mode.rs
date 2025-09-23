@@ -1,4 +1,4 @@
-use std::{borrow::Borrow, collections::HashMap, fs, io::BufReader};
+use std::{collections::HashMap, fs, io::BufReader, path::Path};
 
 use anyhow::Context;
 use lex_service::{
@@ -12,9 +12,10 @@ pub struct JsonModeRepository {
 }
 
 impl JsonModeRepository {
-    pub fn new(path: &str) -> Result<Self, anyhow::Error> {
+    pub fn new(path: &Path) -> Result<Self, anyhow::Error> {
         let reader = BufReader::new(
-            fs::File::open(path).with_context(|| format!("invalid mode repo path: '{}'", path))?,
+            fs::File::open(path)
+                .with_context(|| format!("invalid mode repo path: '{}'", path.display()))?,
         );
         let modes = serde_json::from_reader(reader).with_context(|| "Failed to read JSON")?;
         let modes = set_defaults(modes);
