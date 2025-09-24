@@ -2,7 +2,17 @@
 name = "lex-server"
 version.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 
 [dependencies]
+anyhow.workspace = true
+fastrace = { workspace = true, features = ["enable"] }
 lex-http.workspace = true
+lex-json-repos.workspace = true
+lex-service.workspace = true
 tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+
+[dev-dependencies]
+insta = { workspace = true, features = ["json"] }
+reqwest = { workspace = true, features = ["json"] }
+serde_json.workspace = true

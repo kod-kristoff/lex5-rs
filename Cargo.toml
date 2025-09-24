@@ -1,14 +1,26 @@
 [workspace]
 resolver = "3"
-members = ["lex-http", "lex-server"]
+members = ["lex-http", "lex-json-repos", "lex-server", "lex-service", ]
 
 [workspace.package]
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.85"
 
 [workspace.dependencies]
 # local crates
 lex-http = { path = "./lex-http/" }
+lex-json-repos = { path = "./lex-json-repos" }
+lex-service = { path = "./lex-service/" }
 
 # external crates
+anyhow = "1.0.99"
+axum = "0.8.4"
+fastrace = "0.7.14"
+insta = "1.43.2"
+log = "0.4.28"
+reqwest = "0.12.23"
+serde = "1.0.225"
+serde_json = "1.0.145"
+thiserror = "2.0.16"
 tokio = "1.47.1"
