@@ -19,11 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     name: ubuntu / nightly
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
           submodules: true
+          persist-credentials: false
       - name: Install nightly
-        uses: dtolnay/rust-toolchain@nightly
+        uses: dtolnay/rust-toolchain@6d653acede28d24f02e3cd41383119e8b1b35921 # master
+        with:
+          toolchain: nightly
       - name: cargo generate-lockfile
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
@@ -42,12 +45,15 @@ jobs:
     # just redo what happened in the regular test job. Unfortunately, hashFiles only works in if on
     # steps, so we repeat it.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
           submodules: true
+          persist-credentials: false
       - name: Install beta
         if: hashFiles('Cargo.lock') != ''
-        uses: dtolnay/rust-toolchain@beta
+        uses: dtolnay/rust-toolchain@6d653acede28d24f02e3cd41383119e8b1b35921 # master
+        with:
+          toolchain: beta
       - name: cargo update
         if: hashFiles('Cargo.lock') != ''
         run: cargo update
@@ -67,6 +73,6 @@ jobs:
     permissions: {}
     steps:
       - name: Decide whether the needed jobs succeeded or failed
-        uses: re-actors/alls-green@release/v1
+        uses: re-actors/alls-green@13b4244b312e8a314951e03958a2f91519a6a3c9 # release/v1.2.2
         with:
           jobs: ${{ toJSON(needs) }}

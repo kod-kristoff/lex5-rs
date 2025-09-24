@@ -26,12 +26,14 @@ jobs:
     runs-on: ubuntu-latest
     name: stable / fmt
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
           submodules: true
+          persist-credentials: false
       - name: Install stable
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@6d653acede28d24f02e3cd41383119e8b1b35921 # master
         with:
+          toolchain: stable
           components: rustfmt
       - name: cargo fmt --check
         run: cargo fmt --check
@@ -47,16 +49,17 @@ jobs:
         # Get early warning of new lints which are regularly introduced in beta channels.
         toolchain: [stable, beta]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
           submodules: true
+          persist-credentials: false
       - name: Install ${{ matrix.toolchain }}
-        uses: dtolnay/rust-toolchain@master
+        uses: dtolnay/rust-toolchain@6d653acede28d24f02e3cd41383119e8b1b35921 # master
         with:
           toolchain: ${{ matrix.toolchain }}
           components: clippy
       - name: cargo clippy
-        uses: auguwu/clippy-action@1.4.0
+        uses: auguwu/clippy-action@94a9ff2f6920180b89e5c03d121d0af04a9d3e03 # v1.4.0
         with:
           token: ${{secrets.GITHUB_TOKEN}}
   doc:
@@ -66,11 +69,14 @@ jobs:
     runs-on: ubuntu-latest
     name: nightly / doc
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
           submodules: true
+          persist-credentials: false
       - name: Install nightly
-        uses: dtolnay/rust-toolchain@nightly
+        uses: dtolnay/rust-toolchain@6d653acede28d24f02e3cd41383119e8b1b35921 # master
+        with:
+          toolchain: nightly
       - name: cargo doc
         run: cargo doc --no-deps --all-features
         env:
@@ -81,13 +87,18 @@ jobs:
     runs-on: ubuntu-latest
     name: ubuntu / stable / features
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
           submodules: true
+          persist-credentials: false
       - name: Install stable
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@6d653acede28d24f02e3cd41383119e8b1b35921 # master
+        with:
+          toolchain: stable
       - name: cargo install cargo-hack
-        uses: taiki-e/install-action@cargo-hack
+        uses: taiki-e/install-action@6f69ec9970ed0c500b1b76d648e05c4c7e0e5671 # v2.62.5
+        with:
+          tool: cargo-hack
       # intentionally no target specifier; see https://github.com/jonhoo/rust-ci-conf/pull/4
       # --feature-powerset runs for every combination of features
       - name: cargo hack
@@ -102,11 +113,12 @@ jobs:
         msrv: ["1.85.0"] # 2021 edition requires 1.56
     name: ubuntu / ${{ matrix.msrv }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
           submodules: true
+          persist-credentials: false
       - name: Install ${{ matrix.msrv }}
-        uses: dtolnay/rust-toolchain@master
+        uses: dtolnay/rust-toolchain@6d653acede28d24f02e3cd41383119e8b1b35921 # master
         with:
           toolchain: ${{ matrix.msrv }}
       - name: cargo +${{ matrix.msrv }} check
@@ -125,6 +137,6 @@ jobs:
     permissions: {}
     steps:
       - name: Decide whether the needed jobs succeeded or failed
-        uses: re-actors/alls-green@release/v1
+        uses: re-actors/alls-green@13b4244b312e8a314951e03958a2f91519a6a3c9 # release/v1.2.2
         with:
           jobs: ${{ toJSON(needs) }}
