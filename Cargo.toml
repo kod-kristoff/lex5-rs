@@ -5,6 +5,7 @@ members = ["lex-http", "lex-json-repos", "lex-server", "lex-service", ]
 [workspace.package]
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.85"
 
 [workspace.dependencies]
 # local crates

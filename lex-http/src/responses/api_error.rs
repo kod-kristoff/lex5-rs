@@ -6,6 +6,7 @@ use lex_service::models::mode::ListAllModesError;
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ApiError {
     InternalServerError(String),
+    #[allow(dead_code)]
     UnprocessableEntity(String),
 }
 
