@@ -1,11 +1,15 @@
-use std::{borrow::Borrow, fmt};
+use std::{borrow::Borrow, collections::HashMap, fmt};
 
 #[derive(Debug, thiserror::Error)]
 pub enum ListAllModesError {
     #[error(transparent)]
     Unknown(#[from] anyhow::Error),
 }
-
+#[derive(Debug, thiserror::Error)]
+pub enum ModeFieldmappingsError {
+    #[error(transparent)]
+    Unknown(#[from] anyhow::Error),
+}
 /// A mode.
 #[derive(Debug, Clone, serde::Deserialize)]
 pub struct Mode {
@@ -67,3 +71,6 @@ impl PartialEq<&str> for &ModeId {
         self.0.eq(*other)
     }
 }
+
+#[derive(Clone, Debug, Default)]
+pub struct FieldMappings(HashMap<String, String>);

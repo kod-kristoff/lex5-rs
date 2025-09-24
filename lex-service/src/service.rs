@@ -4,7 +4,7 @@
 */
 
 use crate::{
-    models::mode::{ListAllModesError, Mode},
+    models::mode::{FieldMappings, ListAllModesError, Mode, ModeFieldmappingsError},
     ports::{LexService, ModeRepository},
 };
 
@@ -32,5 +32,12 @@ where
 {
     async fn all_modes(&self) -> Result<Vec<Mode>, ListAllModesError> {
         self.mode_repo.all_modes().await
+    }
+
+    async fn get_fieldmappings(
+        &self,
+        mode: &str,
+    ) -> Result<Option<FieldMappings>, ModeFieldmappingsError> {
+        self.mode_repo.get_fieldmappings(mode).await
     }
 }

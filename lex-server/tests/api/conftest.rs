@@ -28,4 +28,8 @@ impl TestApp {
     pub fn modes(&self) -> String {
         format!("{}/modes", self.address)
     }
+
+    pub fn modeinfo(&self, mode: &str) -> String {
+        format!("{}/modeinfo/{}", self.address, mode)
+    }
 }

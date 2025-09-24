@@ -1,4 +1,4 @@
-use crate::models::mode::{ListAllModesError, Mode};
+use crate::models::mode::{FieldMappings, ListAllModesError, Mode, ModeFieldmappingsError};
 
 /// `LexService` is the public API for the blog domain.
 ///
@@ -7,6 +7,11 @@ use crate::models::mode::{ListAllModesError, Mode};
 pub trait LexService: Clone + Send + Sync + 'static {
     /// Asynchronously list all [Mode]s.
     fn all_modes(&self) -> impl Future<Output = Result<Vec<Mode>, ListAllModesError>> + Send;
+    /// Asynchronously get field mappings for a [Mode].
+    fn get_fieldmappings(
+        &self,
+        mode: &str,
+    ) -> impl Future<Output = Result<Option<FieldMappings>, ModeFieldmappingsError>> + Send;
 }
 
 /// `ModeRepository` represents a store of mode data.
@@ -16,4 +21,9 @@ pub trait LexService: Clone + Send + Sync + 'static {
 pub trait ModeRepository: Send + Sync + Clone + 'static {
     /// Asynchronously list all [Mode]s.
     fn all_modes(&self) -> impl Future<Output = Result<Vec<Mode>, ListAllModesError>> + Send;
+    /// Asynchronously get field mappings for a [Mode].
+    fn get_fieldmappings(
+        &self,
+        mode: &str,
+    ) -> impl Future<Output = Result<Option<FieldMappings>, ModeFieldmappingsError>> + Send;
 }

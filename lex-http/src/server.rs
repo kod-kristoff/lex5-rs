@@ -5,7 +5,7 @@ use axum::{Router, routing};
 use lex_service::ports::LexService;
 use tokio::net;
 
-use crate::handlers::list_modes::list_modes;
+use crate::handlers::{list_modes::list_modes, show_mode::show_mode};
 
 /// Configuration for the HTTP server.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -74,4 +74,5 @@ fn api_routes<LS: LexService>() -> Router<AppState<LS>> {
     Router::new()
         .route("/", routing::get(async || "Hello"))
         .route("/modes", routing::get(list_modes::<LS>))
+        .route("/modeinfo/{mode}", routing::get(show_mode::<LS>))
 }
