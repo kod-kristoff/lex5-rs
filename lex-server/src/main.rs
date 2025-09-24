@@ -6,7 +6,7 @@ use lex_http::{HttpServer, HttpServerConfig};
 use lex_json_repos::json_mode::JsonModeRepository;
 use lex_service::service::Service;
 
-use crate::config::Config;
+pub use crate::config::Config;
 
 mod config;
 
@@ -22,7 +22,7 @@ async fn main() -> anyhow::Result<()> {
     let server_config = HttpServerConfig {
         port: &config.server_port,
     };
-    let server = HttpServer::new(lex_service, server_config).await.unwrap();
+    let server = HttpServer::new(lex_service, server_config).await?;
 
     let res = server.run().await;
 

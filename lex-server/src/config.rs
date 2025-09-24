@@ -13,6 +13,14 @@ pub struct Config {
 }
 
 impl Config {
+    pub fn new(server_port: String, instance_path: PathBuf) -> Config {
+        let config_path = instance_path.join("config");
+        Config {
+            server_port,
+            instance_path,
+            config_path,
+        }
+    }
     pub fn from_env() -> anyhow::Result<Config> {
         let server_port = load_env(SERVER_PORT_KEY)
             .ok()
@@ -21,12 +29,7 @@ impl Config {
             .ok()
             .unwrap_or_else(|| "./".to_string())
             .into();
-        let config_path = instance_path.join("config");
-        Ok(Config {
-            server_port,
-            instance_path,
-            config_path,
-        })
+        Ok(Config::new(server_port, instance_path))
     }
 
     pub fn modes_path(&self) -> PathBuf {

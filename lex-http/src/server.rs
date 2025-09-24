@@ -55,6 +55,10 @@ impl HttpServer {
         Ok(Self { router, listener })
     }
 
+    pub fn local_addr(&self) -> std::io::Result<std::net::SocketAddr> {
+        self.listener.local_addr()
+    }
+
     /// Runs the HTTP server.
     pub async fn run(self) -> anyhow::Result<()> {
         println!("listening on {}", self.listener.local_addr().unwrap());

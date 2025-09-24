@@ -1,0 +1,16 @@
+---
+source: lex-server/tests/api/modes.rs
+expression: data
+---
+{
+  "default": [],
+  "foo": [],
+  "karp": [
+    "panacea"
+  ],
+  "large_lex": [],
+  "panacea": [],
+  "panacea_links": [
+    "panacea"
+  ]
+}
