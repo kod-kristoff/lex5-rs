@@ -1,0 +1,11 @@
+[package]
+name = "lex-service"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+fastrace.workspace = true
+serde = { workspace = true, features = ["derive"] }
+thiserror.workspace = true

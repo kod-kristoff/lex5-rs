@@ -1,11 +1,22 @@
+use std::sync::Arc;
+
 use anyhow::Context;
 use axum::{Router, routing};
+use lex_service::ports::LexService;
 use tokio::net;
+
+use crate::handlers::list_modes::list_modes;
 
 /// Configuration for the HTTP server.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct HttpServerConfig<'a> {
     pub port: &'a str,
+}
+
+#[derive(Debug, Clone)]
+/// The global application state shared between all request handlers.
+pub(crate) struct AppState<LS: LexService> {
+    pub(crate) lex_service: Arc<LS>,
 }
 
 /// The application's HTTP server. The underlying HTTP package is opaque to module consumers.
@@ -17,7 +28,7 @@ pub struct HttpServer {
 impl HttpServer {
     /// Returns a new HTTP server bound to the port specified in `config`.
     pub async fn new(
-        // blog_service: impl BlogService,
+        lex_service: impl LexService,
         config: HttpServerConfig<'_>,
     ) -> anyhow::Result<Self> {
         println!("Creating HttpServer!");
@@ -29,21 +40,23 @@ impl HttpServer {
         // );
 
         // Construct dependencies to inject into handlers.
-        // let state = AppState {
-        //     author_service: Arc::new(blog_service),
-        // };
-        //
-        let router = 
-             api_routes()
-        //     .layer(trace_layer)
-        //     .with_state(state);
-        ;
+        let state = AppState {
+            lex_service: Arc::new(lex_service),
+        };
+
+        let router = api_routes()
+            //     .layer(trace_layer)
+            .with_state(state);
 
         let listener = net::TcpListener::bind(format!("0.0.0.0:{}", config.port))
             .await
             .with_context(|| format!("failed to listen on {}", config.port))?;
 
         Ok(Self { router, listener })
+    }
+
+    pub fn local_addr(&self) -> std::io::Result<std::net::SocketAddr> {
+        self.listener.local_addr()
     }
 
     /// Runs the HTTP server.
@@ -57,6 +70,8 @@ impl HttpServer {
     }
 }
 
-fn api_routes() -> Router {
-    Router::new().route("/", routing::get(async || "Hello"))
+fn api_routes<LS: LexService>() -> Router<AppState<LS>> {
+    Router::new()
+        .route("/", routing::get(async || "Hello"))
+        .route("/modes", routing::get(list_modes::<LS>))
 }
